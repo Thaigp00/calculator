@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    height: 100vh;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: #F7F7F7;
+}
+
+#title {
+    font-size: 3rem;
+    color: #010B13
+}
+
+#calculator {
+    width: 400px;
+    height: 500px;
+    border-radius: 2rem;
+    background-color: #010B13;
+}
+
+#footer {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 6.5rem;
+    border-radius: 1.5rem;
+    color: #FF4F00;
+    background-color: #010B13;
+}
+
+.social-media {
+    width: 2rem;
+}
