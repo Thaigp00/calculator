@@ -40,11 +40,16 @@ body {
     padding: 0.5rem 1rem;
     text-align: end;
     font-weight: bold;
-    background-color: #708090;
+    background-color: #E5E4E2;
 }
 
 #result {
-    font-size: 2rem;
+    font-size: 2.5rem;
+}
+
+#calculation {
+    opacity: 60%;
+    height: 50%;
 }
 
 #buttons {
@@ -116,6 +121,19 @@ button {
 .extra:active {
     border-color: #C5C4C2;
     background-color: #C5C4C2;
+}
+
+#equal {
+    border-color: #228B22;
+    background-color: #228B22;
+}
+#equal:hover {
+    border-color: #329B32;
+    background-color: #329B32;
+}
+#equal:active {
+    border-color: #026B02;
+    background-color: #026B02;
 }
 
 #footer {
