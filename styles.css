@@ -25,7 +25,8 @@ body {
     flex-direction: column;
     gap: 2rem;
     padding: 1.5rem;
-    width: 400px;
+    min-width: 250px;
+    max-width: 400px;
     height: 500px;
     border-radius: 2rem;
     background-color: #000;
@@ -44,12 +45,11 @@ body {
 }
 
 #result {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
 }
 
 #calculation {
     opacity: 60%;
-    height: 50%;
 }
 
 #buttons {
@@ -141,7 +141,7 @@ button {
     align-items: center;
     padding: 1.5rem 6.5rem;
     border-radius: 1.5rem;
-    color: #D45101;
+    color: #E5E4E2;
     background-color: #000;
 }
 
