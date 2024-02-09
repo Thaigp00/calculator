@@ -55,7 +55,7 @@ function checkDecimalZero() {
 }
 
 function checkDecimalPlaces(number=displayNumber) {
-    if (decimalActive) {
+    if (decimalActive && number.includes(".")) {
         const decimalPoint = number.indexOf(".");
         return number.length - decimalPoint;
     }
@@ -161,7 +161,7 @@ function updateDisplay() {
                     populateDisplay();
                     displayNumber = DISPLAY_NUMBER_DEFAULT;
                 }
-                
+
                 if (operationResult === ERROR_MESSAGE) displayNumber = DISPLAY_NUMBER_DEFAULT;
             }
             else if (e.target.id !== "equal") changeOperator(e.target.textContent);
