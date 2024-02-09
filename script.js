@@ -153,14 +153,16 @@ function updateDisplay() {
                     calculationText += ` ${displayNumber} = `;
                     displayNumber = operationResult;
                     populateDisplay();
-                    if (operationResult === ERROR_MESSAGE) displayNumber = DISPLAY_NUMBER_DEFAULT;
                 }
 
                 if (e.target.id !== "equal") {
-                    calculationText = `${displayNumber} ${e.target.textContent}`;
+                    if (displayNumber === ERROR_MESSAGE) calculationText = `${DISPLAY_NUMBER_DEFAULT} ${e.target.textContent}`;
+                    else calculationText = `${displayNumber} ${e.target.textContent}`;
                     populateDisplay();
                     displayNumber = DISPLAY_NUMBER_DEFAULT;
                 }
+                
+                if (operationResult === ERROR_MESSAGE) displayNumber = DISPLAY_NUMBER_DEFAULT;
             }
             else if (e.target.id !== "equal") changeOperator(e.target.textContent);
 
