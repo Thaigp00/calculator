@@ -3,13 +3,13 @@ const CALCULATION_TEXT_DEFAULT = "",
     DISPLAY_NUMBER_MAX = 14,
     DECIMAL_ACTIVE_DEFAULT = false,
     DECIMAL_PLACES_MAX = 4,
-    OPERATE_ACTIVE_DEFAULT = false;
+    OPERATE_ACTIVE_DEFAULT = false,
     ERROR_MESSAGE = "WTF BRO";
 
 let calculationText,
     displayNumber,
     decimalActive,
-    operateActive
+    operateActive;
 
 function setToDefault() {
     calculationText = CALCULATION_TEXT_DEFAULT;
@@ -39,8 +39,10 @@ function operate(first, operator, second) {
     switch (operator) {
         case "+": return add(first, second);
         case "-": return subtract(first, second);
-        case "×": return multiply(first, second);
-        case "÷": return divide(first, second);
+        case "×":
+        case "*": return multiply(first, second);
+        case "÷": 
+        case "/": return divide(first, second);
     }
 }
 
@@ -79,8 +81,11 @@ function getExponentialPart(number) {
 
 function limitNumberLength(number=displayNumber) {
     if (number.length > DISPLAY_NUMBER_MAX) {
-        let limitedNumber = `${number[0]}.`;
-        for (let i = 1; i <= DECIMAL_PLACES_MAX; i++) {
+        const isPositive = +number > 0;
+        const beginning = (isPositive) ? 0 : 1;
+        let limitedNumber = (isPositive) ? "" : "-";
+        limitedNumber += `${number[beginning]}.`;
+        for (let i = beginning + 1; i <= DECIMAL_PLACES_MAX + beginning; i++) {
             if (number[i] === ".") {
                 number = number.slice(0, i) + number.slice(i + 1);
                 i--;
@@ -127,72 +132,99 @@ function changeOperator(newOperator) {
     displayNumber = DISPLAY_NUMBER_DEFAULT;
 }
 
+function doNumber(number) {
+    if (displayNumber.length <= DISPLAY_NUMBER_MAX && checkDecimalPlaces() <= DECIMAL_PLACES_MAX) {
+        displayNumber += number;
+        operateActive = true;
+        populateDisplay();
+    }
+}
+
+function doDecimal() {
+    if (!decimalActive) {
+        displayNumber += ".";
+        decimalActive = true;
+        populateDisplay();
+    }
+}
+
+function doOperator(operator) {
+    if (operateActive) {
+        const operation = `${calculationText} ${displayNumber}`.split(" ");
+        let operationResult;
+
+        if (operation.length === 3 && operation[2]) {
+            operationResult = operate(+operation[0], operation[1], +operation[2]);
+            calculationText += ` ${displayNumber} = `;
+            displayNumber = operationResult;
+            populateDisplay();
+        }
+
+        if (operator !== "=") {
+            if (displayNumber === ERROR_MESSAGE) calculationText = `${DISPLAY_NUMBER_DEFAULT} ${operator}`;
+            else calculationText = `${displayNumber} ${operator}`;
+            populateDisplay();
+            displayNumber = DISPLAY_NUMBER_DEFAULT;
+        }
+
+        if (operationResult === ERROR_MESSAGE) displayNumber = DISPLAY_NUMBER_DEFAULT;
+    }
+    else if (operator !== "=") changeOperator(operator);
+
+    if (operator !== "=") operateActive = false;
+}
+
 function updateDisplay() {
     const buttons = document.querySelector("#buttons");
-    let operation,
-        operationResult;
-
     buttons.addEventListener("click", e => {
-        if (e.target.classList.contains("number") 
-        && displayNumber.length <= DISPLAY_NUMBER_MAX && checkDecimalPlaces() <= DECIMAL_PLACES_MAX) {
-            displayNumber += e.target.id;
-            operateActive = true;
-            populateDisplay();
-        }
-        else if (e.target.id === "decimal" && !decimalActive) {
-            displayNumber += ".";
-            decimalActive = true;
-            populateDisplay();
-        }
-        else if (e.target.classList.contains("operator")) {
-            if (operateActive) {
-                operation = `${calculationText} ${displayNumber}`.split(" ");
-
-                if (operation.length === 3 && operation[2]) {
-                    operationResult = operate(+operation[0], operation[1], +operation[2]);
-                    calculationText += ` ${displayNumber} = `;
-                    displayNumber = operationResult;
-                    populateDisplay();
-                }
-
-                if (e.target.id !== "equal") {
-                    if (displayNumber === ERROR_MESSAGE) calculationText = `${DISPLAY_NUMBER_DEFAULT} ${e.target.textContent}`;
-                    else calculationText = `${displayNumber} ${e.target.textContent}`;
-                    populateDisplay();
-                    displayNumber = DISPLAY_NUMBER_DEFAULT;
-                }
-
-                if (operationResult === ERROR_MESSAGE) displayNumber = DISPLAY_NUMBER_DEFAULT;
-            }
-            else if (e.target.id !== "equal") changeOperator(e.target.textContent);
-
-            if (e.target.id !== "equal") operateActive = false;
-        }
+        if (e.target.classList.contains("number")) doNumber(e.target.id);
+        else if (e.target.id === "decimal") doDecimal();
+        else if (e.target.classList.contains("operator")) doOperator(e.target.textContent);
         checkDecimalActive();
     });
 }
 
+function updateDisplayKeyboard() {
+    const operators = ["=", "+", "-", "*", "×", "/", "÷"];
+    let key;
+    window.addEventListener("keydown", e => {
+        key = e.key;
+        if (key === "Enter") key = "=";
+        if (!isNaN(key)) doNumber(key);
+        else if (key === ".") doDecimal();
+        else if (operators.includes(key)) doOperator(key);
+        else if (key === "Backspace") {
+            if (e.ctrlKey) resetToDefault();
+            else removeLastChar();
+        }
+    });
+}
+function removeLastChar() {
+    const lastChar = displayNumber[displayNumber.length - 1];
+    if (lastChar) displayNumber = displayNumber.slice(0, -1);
+    populateDisplay();
+}
+
 function del() {
     const deleteButton = document.querySelector("#delete");
-    deleteButton.addEventListener("click", () => {
-        const lastChar = displayNumber[displayNumber.length - 1];
-        if (lastChar) displayNumber = displayNumber.slice(0, -1);
-        populateDisplay();
-    })
+    deleteButton.addEventListener("click", removeLastChar);
+}
+
+function resetToDefault() {
+    setToDefault();
+    populateDisplay();
 }
 
 function clear() {
     const clearButton = document.querySelector("#clear");
-    clearButton.addEventListener("click", () => {
-        setToDefault();
-        populateDisplay();
-    })
+    clearButton.addEventListener("click", resetToDefault);
 }
 
 function run() {
     setToDefault();
     populateDisplay();
     updateDisplay();
+    updateDisplayKeyboard();
     del();
     clear();
 }
