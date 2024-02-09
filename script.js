@@ -63,8 +63,9 @@ function checkDecimalPlaces(number=displayNumber) {
 }
 
 function formatDisplayNumber() {
-    const lastChar = displayNumber[displayNumber.length - 1];
-    if (decimalActive) {
+    if (displayNumber === "-") displayNumber = DISPLAY_NUMBER_DEFAULT;
+    else if (decimalActive) {
+        const lastChar = displayNumber[displayNumber.length - 1];
         if (displayNumber === ".") displayNumber = "0.";
         else if (lastChar !== "." && !checkDecimalZero) displayNumber = (+displayNumber).toString();
     }
@@ -163,7 +164,7 @@ function updateDisplay() {
             }
             else if (e.target.id !== "equal") changeOperator(e.target.textContent);
 
-            operateActive = false;
+            if (e.target.id !== "equal") operateActive = false;
         }
         checkDecimalActive();
     });
